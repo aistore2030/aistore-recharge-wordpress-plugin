@@ -57,13 +57,8 @@ function aistore2030_register_my_custom_menu_page()
 	
     add_menu_page('Recharge', 'Recharge ', 'read', 'aistore2030_recharge', 'aistore2030_complete_recharge_report', '', 51);
     
-	add_submenu_page('aistore2030_recharge', 'Prepaid', 'Prepaid', 'read', 'aistore2030_manage_forms_step', 'aistore2030_manage_forms_step');
-   
-   add_submenu_page('aistore2030_recharge', 'DTH ', 'DTH', 'read', 'aistore2030_dth_recharge_form', 'aistore2030_dth_recharge_form');
-    
-    
-    
-    add_submenu_page('aistore2030_recharge', 'Aistore Recharge', 'Settings', 'administrator', 'aistore_recharge_settings_page', 'aistore_recharge_settings_page');
+
+	 add_submenu_page('aistore2030_recharge', 'Aistore Recharge', 'Settings', 'administrator', 'aistore_recharge_settings_page', 'aistore_recharge_settings_page');
     
     
     add_action('admin_init', 'aistore_recharge_settings_group');
@@ -73,9 +68,12 @@ function aistore2030_register_my_custom_menu_page()
 
 
 
+
+
+
 function aistore2030_complete_recharge_report()
 {
-    echo "<div class='wrap'>";
+   
    
 
 
@@ -179,48 +177,20 @@ exit();
 
 
 
-
-
-
-function aistore2030_manage_forms_step()
-{
-	
-
-
-
-
-    $step = "one";
-    
-    
-    if (isset($_REQUEST['step'])) {
-        $step = $_REQUEST['step'];
-    }
-    
-    $step = sanitize_text_field($step);
-    
-    
-    if ($step == "one") {
-        aistore2030_prepaid_recharge_form();
-    } else if ($step == "two") {
-        
-        
-        processRechargeStep2();
-    } else if ($step == "three") {
-        processRechargeStep3();
-    }
-    
-    
-}
+ 
 
 
 function aistore2030_prepaid_recharge_form()
 {
+     
     
+	
     
-    echo "<div class='wrap'>";
-    
-    
-    $url2 = admin_url('admin.php?page=aistore2030_manage_forms_step&step=two');
+    	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
     
     
 ?>
@@ -233,33 +203,23 @@ function aistore2030_prepaid_recharge_form()
   
    
 Number
-<input type="text" name="recharge_number" value="8840574997" />
+<input type="text" name="recharge_number" value="" />
 
 Operator
 <select name="recharge_operator">
 <option value="0">Select Operator:</option>
-<option value='Airtel'>Airtel</option>
-<option value='Aircel'>Aircel </option>
+<option value='Airtel'>Airtel</option> 
 <option value='Idea'>Idea </option>
 <option value='BT'>Bsnl Topup </option>
 <option value='BSNL Special'>BSNL SPECIAL TARIFF </option>
-<option value='RelianceCDMA'>Reliance CDMA </option>
-<option value='Reliance'>Reliance GSM </option>
+<option value='RelianceJio'>Reliance Jio </option> 
 <option value='Docomo'>Tata Docomo Topup </option>
 <option value='DocomoSpecial'>Tata Docomo Special </option>
 <option value='TataIndicom'>Tata Indicom </option>
 <option value='Vodafone'>Vodafone </option>
 <option value='MTS'>MTS </option>
-<option value='Uninor'>Uninor </option>
-<option value='UninorSpecial'>Uninor Special               </option>
-<option value='Loop'>Loop Mobile </option>
-<option value='Videocon'>Videocon </option>
-<option value='VideoconSpecial'>Videocon Special </option>
-<option value='MTNLDLTopup'>MTNL DL Topup </option>
-<option value='MTNLDLSpecial'>MTNL DL Special </option>
-<option value='MTNLMumbai'>MTNL Mumbai </option>
-<option value='MTNLMumbaiSpecial'>MTNL Mumbai Special </option>
-<option value='DTV'>Tata Walky </option>
+
+
 </select>
  
 	
@@ -272,7 +232,8 @@ Recharge  Amount
 <input type="submit" value="Process Recharge" />
 </form>
          
-    </div>
+    
+	
       <?php
     
     
@@ -281,16 +242,17 @@ Recharge  Amount
 
 
 
-
-
 function aistore2030_dth_recharge_form()
 {
+ 
     
+	
     
-    echo "<div class='wrap'>";
-    
-    
-    $url2 = admin_url('admin.php?page=aistore2030_manage_forms_step&step=two');
+    	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
     
     
 ?>
@@ -337,7 +299,77 @@ function aistore2030_dth_recharge_form()
    <input type="submit" value="Process Recharge" />
 </form>
          
-    </div>
+    
+	
+      <?php
+    
+    
+    
+}
+
+
+
+
+
+
+function aistore2030_postpaid_recharge_form()
+{
+ 
+ 
+    
+	
+   
+	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
+    
+?>
+
+
+ 
+ <h2>Postpaid Recharge Form  </h2> 
+
+ 
+ 
+  
+            
+            <form method="post" action="<?php    echo $url2; ?>">
+  
+   
+   Number
+    <input type="text" name="recharge_number" value="8840574997" />
+	
+	
+   Operator
+    
+  <select name="recharge_operator">
+ 
+ <option value="0">Select Operator:</option>
+  <option value="AirtelPostpaid">AIRTEL POSTPAID</option>
+	
+	 <option value="BsnlPostpaid">BSNL POSTPAID</option>
+    <option value="IdeaPostpaid">IDEA POSTPAID</option>
+    <option value="VodafonePostpaid">VODAFONE POSTPAID</option>
+	
+	  
+</select>
+ 
+	
+	
+ Recharge  Amount
+    <input type="text" name="recharge_amount" value=""  required />
+	
+   
+   <?php
+    wp_nonce_field('process_recharge', 'process_recharge');
+?>
+   
+   <input type="submit" value="Process Recharge" />
+</form>
+         
+		 
       <?php
     
     
@@ -379,8 +411,15 @@ function processRechargeStep2()
     $balance = $wallet->get_wallet_balance($id);
     
     
+  global $wp;
+
+	$current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+	
+ $url3 =	  esc_url( add_query_arg( 'step', 'three', $current_url ) ); 
+ 
+ 
     
-    $url3 = admin_url('admin.php?page=aistore2030_manage_forms_step&step=three');
 ?>
 	
  <h2>Please confirm recharge details   </h2> 
@@ -498,7 +537,8 @@ function processRechargeStep3()
     
     $id = $user->ID;
     
-    
+	
+	
     global $wpdb;
     $table_name = $wpdb->prefix . 'recharge';
     
@@ -664,10 +704,7 @@ recharge_amount,recharge_operator,start_balance,description,url_hit,ip_address )
 	
 	<td>
  
- 
- <?php
-        echo $ar->Message;
-?>
+ Request submitted successfully.
    
 		 
 		 
@@ -741,8 +778,21 @@ function aistore_recharge_settings_page()
 <p>This form is visible to only admin </p>
 
 
-<P> You can get username and password via registering api.sakshamapp.com or talk to the support at <a href="https://api.whatsapp.com/send?phone=919682780263&text=Hello%20I%20need%20support%20for%20the%20Recharge%20plugin" target="_blank" >Talk to whatsapp +91 9682780263</a>
+<P> Talk to the support at <a href="https://api.whatsapp.com/send?phone=919682780263&text=Hello%20I%20need%20support%20for%20the%20Recharge%20plugin" target="_blank" >Talk to whatsapp +91 9682780263</a>
 
+ 
+<h2>Create  4 Pages </h2>
+<p>Page 1 for prepaid recharge form and insert this shortcode [ AistorePrepaid ]  Remove spaces </p>
+
+<p>Page 2 for postpaid recharge form and insert this shortcode [ AistorePostpaid ]  Remove spaces</p>
+
+
+<p>Page 3 for DTH recharge form and insert this shortcode [ AistoreDTH ] Remove spaces  </p>
+
+<p>Page 4 for report of recharge   and insert this shortcode [ AistoreRechargeReport ]  Remove spaces </p>
+
+
+  
 
 <form method="post" action="options.php">
     <?php
@@ -772,10 +822,80 @@ function aistore_recharge_settings_page()
     <?php
     submit_button();
 ?>
+<p>You can get username and password via registering api.sakshamapp.com </p>
+</form> 
 
-</form>
-
-<h1>All feedback welcome </h3>
+<h3>Please note that if you want to handle the call back you will need and an add on plugin aistore-recharge-secure-callback plugin which you can purchase in just Rs 1000 <a href="https://api.whatsapp.com/send?phone=919682780263&text=Hello%20I%20need%20aistore-recharge-secure-callback%20for%20the%20Recharge%20plugin" target="_blank" >Talk to whatsapp +91 9682780263</a> </h3>
 </div>
 <?php
 }
+ 
+    
+
+
+
+function aistore2030_manage_forms_step($type )
+{  $step = "one";
+    
+    
+    if (isset($_REQUEST['step'])) {
+        $step = $_REQUEST['step'];
+    }
+    
+    $step = sanitize_text_field($step);
+    
+    
+    if ($step == "one") {
+        
+		if ($type == "prepaid") {
+         aistore2030_prepaid_recharge_form();
+    } else if ($type == "dth") {
+        aistore2030_dth_recharge_form();
+         
+    } else if ($type == "postpaid") {
+       aistore2030_postpaid_recharge_form() ;
+    }
+	
+	
+    } else if ($step == "two") {
+        
+        
+        processRechargeStep2();
+		 
+    } else if ($step == "three") {
+        processRechargeStep3();
+		  
+    }
+    
+    
+}
+
+
+function aistore2030_prepaid_form()
+{
+	aistore2030_manage_forms_step("prepaid" );
+}
+     
+ function aistore2030_postpaid_form()
+{
+	aistore2030_manage_forms_step("postpaid" );
+}
+     
+	 function aistore2030_dth_form()
+{
+	aistore2030_manage_forms_step("dth" );
+}
+     function aistore2030_recharge_report()
+{
+	aistore2030_complete_recharge_report();
+}
+	 
+ 
+add_shortcode( 'AistorePrepaid', 'aistore2030_prepaid_form' );
+ 
+add_shortcode( 'AistorePostpaid', 'aistore2030_postpaid_form' );
+ 
+ add_shortcode( 'AistoreDTH', 'aistore2030_dth_form' );
+
+
+ add_shortcode( 'AistoreRechargeReport', 'aistore2030_recharge_report' ); 

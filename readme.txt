@@ -29,6 +29,12 @@ You can earn upto 7.5 % profit from the margin in the rechagre. The setup is ver
 
 In order to use this services you need to be a registered user of http://mobilerechargeapi.in/ and in configuration you will need to provide username and password.
 
+Create  4 Pages 
+Page 1 for prepaid recharge form and insert this shortcode [ AistorePrepaid ]  Remove spaces 
+Page 2 for postpaid recharge form and insert this shortcode [ AistorePostpaid ]  Remove spaces
+Page 3 for DTH recharge form and insert this shortcode [ AistoreDTH ] Remove spaces 
+Page 4 for report of recharge   and insert this shortcode [ AistoreRechargeReport ]  Remove spaces 
+
 
 
 === Key Features  ===
