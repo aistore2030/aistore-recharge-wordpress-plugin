@@ -46,13 +46,11 @@ exit();
         <th>Number / Connection ID</th>       
         <th>Operator </th>
         <th>Amount</th>
-        <th>Start Balance </th>
-        <th>End Balance </th>
-		
-        
+       
+           <th>Status</th> 
          <th>Operator ID</th>       
          
-         <th>Status</th>
+      
     </tr>
 </thead> 
 
@@ -69,8 +67,8 @@ exit();
         
         echo "<td>" . $wp_formmaker_submits->recharge_amount . "</td>";
         
-        echo "<td>" . $wp_formmaker_submits->start_balance . "</td>";
-        echo "<td>" . $wp_formmaker_submits->end_balance . "</td>";
+        echo "<td>" . $wp_formmaker_submits->status . "</td>";
+        echo "<td>" . $wp_formmaker_submits->operator_transaction_id . "</td>";
         
         
         

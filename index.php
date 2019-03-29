@@ -30,15 +30,9 @@ function aistore2030_register_my_custom_menu_page()
 }
 
 
-
-
 function aistore2030_complete_recharge_report_admin()
 {
-   
-   
-
- 
-     
+    
      ob_start(); 
 include "template/report.php";
      echo  ob_get_clean();
@@ -48,10 +42,12 @@ include "template/report.php";
 
 function aistore2030_complete_recharge_report()
 {
-   
-   
-     
-     ob_start(); 
+ 
+ 
+  //processRechargeStep3($_REQUEST['i']);
+	  
+	  
+     ob_start();	 
 include "template/report.php";
      return ob_get_clean();
     
@@ -60,17 +56,9 @@ include "template/report.php";
 
 
 
-
-
- 
-
-
 function aistore2030_prepaid_recharge_form()
 {
-     
-    
-	
-    	global $wp;
+   	global $wp;
  $current_url = home_url( add_query_arg( array(), $wp->request )	 );
 
  $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
@@ -86,9 +74,6 @@ include "template/prepaid.php";
 function aistore2030_dth_recharge_form()
 {
  
-    
-	
-    
     	global $wp;
  $current_url = home_url( add_query_arg( array(), $wp->request )	 );
 
@@ -102,14 +87,9 @@ return ob_get_clean();
 
 
 
-
-
 function aistore2030_postpaid_recharge_form()
 {
  
- 
-    
-	
    
 	global $wp;
  $current_url = home_url( add_query_arg( array(), $wp->request )	 );
@@ -142,9 +122,7 @@ function processRechargeStep2()
     $recharge_amount   = sanitize_text_field($_REQUEST['recharge_amount']);
 	
 		 $product = aistore_get_wallet_rechargeable_product();
-	 
-	 
- 
+	  
 	  WC()->cart->empty_cart();
 	  
 	  $cart_item_data = array('price' => $recharge_amount,'recharge_number' => $recharge_number,'recharge_operator' => $recharge_operator);
@@ -161,31 +139,8 @@ include  "template/step2.php";
 return ob_get_clean();
  
  
- 
- 
-    
-     
     
 }
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
 
 
 
@@ -312,7 +267,33 @@ function aistore2030_add_custom_price( $cart ) {
 
 
 
+ add_filter('woocommerce_thankyou_order_received_text', 'woo_change_order_received_text', 10, 2 );
  
+ 
+ 
+function woo_change_order_received_text( $str, $order ) {
+	
+	
+	
+	
+ foreach ( $order->get_items() as $key => $item ) {
+	 
+	 $product_id = $item->get_product_id();
+	 $product = aistore_get_wallet_rechargeable_product();
+	 if ($product->get_id() <> $product_id)    return "";
+             
+			 
+				
+				
+    $recharge_operator = wc_get_order_item_meta( $key, 'recharge_operator' );
+   $recharge_number = wc_get_order_item_meta( $key, 'recharge_number' );
+   $recharge_amount = $item->get_total();
+}  
+
+
+    $new_str = 'Recharge for the number '.$recharge_number. ' and operator '.$recharge_operator .' was forwarded to server. Please visit recharge report page to see live status.' ;
+    return $new_str;
+}
 
 
 
@@ -320,18 +301,22 @@ function aistore2030_add_custom_price( $cart ) {
 
  function processRechargeStep3($order_id){
 
-     
+ 
     $order = wc_get_order( $order_id );
 
 	
 	
  foreach ( $order->get_items() as $key => $item ) {
-    $recharge_operator = wc_get_order_item_meta( $key, 'recharge_operator' );
+    
+$product_id = $item->get_product_id();
+	 $product = aistore_get_wallet_rechargeable_product();
+	 if ($product->get_id() <> $product_id)    return "";
+        
+				
    $recharge_number = wc_get_order_item_meta( $key, 'recharge_number' );
    $recharge_amount = $item->get_total();
-}  
-
-
+    $recharge_operator = wc_get_order_item_meta( $key, 'recharge_operator' );
+	 
     $user = wp_get_current_user();
     
     $id = $user->ID;
@@ -339,9 +324,15 @@ function aistore2030_add_custom_price( $cart ) {
 
 $url = "http://api.sakshamapp.com/MobileRech?username=" . esc_attr(get_option('aistore_username')) . "&password=" . esc_attr(get_option('aistore_password')) . "&recharge_circle=0&recharge_operator=$recharge_operator&recharge_number=$recharge_number&amount=$recharge_amount&format=json&requestID=";
         
-        
+    global   $wpdb;
+    
+    $table_name = $wpdb->prefix . 'recharge';
+     
+    $details= "$product_id---$productIDN -- Recharge request for the $recharge_operator  recharge_number=$recharge_number  amount $recharge_amount and order id $order_id ";
+	
+    
         $wpdb->query($wpdb->prepare("INSERT INTO $table_name (user_id,recharge_number,
-recharge_amount,recharge_operator, description,url_hit,ip_address ) VALUES (%d, %s,%s,%s,%s, %s ,%s ,%s)", array(
+recharge_amount,recharge_operator, description,url_hit,ip_address ) VALUES (%d, %s,%s,%s,%s, %s  ,%s )", array(
             $id,
             $recharge_number,
             $recharge_amount,
@@ -383,22 +374,24 @@ recharge_amount,recharge_operator, description,url_hit,ip_address ) VALUES (%d, 
         if ($ar->error) {
             
     $wallet = new Woo_Wallet_Wallet();
-          $wallet->credit(1, $recharge_amount, $details = 'Recharge refund ' . $_REQUEST['recharge_number']);
+ 
+
+ $wallet->credit(1, $recharge_amount, $details = 'Recharge refund ' .$recharge_number);
               
-            
-			
+      
+        
+
+		
             $wpdb->query($wpdb->prepare("update $table_name 
  set 
   status  = 'Failure',
     message  = %s,
-	Error  = %s,
-    end_balance  = %d
+	Error  = %s 
  where
   id  = %d   
   ", array(
                 "Recharge is failure",
-                $ar->error,
-                $balance,
+                $ar->error ,
                 $insert_id
             )));
             
@@ -426,37 +419,18 @@ recharge_amount,recharge_operator, description,url_hit,ip_address ) VALUES (%d, 
             
         }
 		
-		
-		
-		
-  $call_url=  $recharge_operator ."--". $recharge_number ."--".  $recharge_amount  ;
- return  $call_url;
-}
+ 	}
+	
+	
+}  
 
-function mysite_completed($order_id) {
-    // Create post object
-$my_post = array(
-  'post_title'    =>$order_id."ssssss",
-  'post_content'  => processRechargeStep3($order_id),
-  'post_status'   => 'publish',
-  'post_author'   => 1,
-  'post_category' => array( 8,39 )
-);
+
+		
+		
+		
  
-// Insert the post into the database
-wp_insert_post( $my_post );
-} 
-
-add_action( 'woocommerce_order_status_pending', 'mysite_completed', 10, 1);
-add_action( 'woocommerce_order_status_failed', 'mysite_completed', 10, 1);
-add_action( 'woocommerce_order_status_on-hold', 'mysite_completed', 10, 1);
-// Note that it's woocommerce_order_status_on-hold, and NOT on_hold.
-add_action( 'woocommerce_order_status_processing', 'mysite_completed', 10, 1);
-add_action( 'woocommerce_order_status_completed', 'mysite_completed', 10, 1);
-add_action( 'woocommerce_order_status_refunded', 'mysite_completed', 10, 1);
-add_action( 'woocommerce_order_status_cancelled', 'mysite_completed', 10, 1);
-
-
+add_action( 'woocommerce_order_status_completed', 'processRechargeStep3', 10, 1);
+ 
 
  
  include "util.php";
