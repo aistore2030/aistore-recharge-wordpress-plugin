@@ -107,11 +107,11 @@ return ob_get_clean();
 
 
 function processRechargeStep2()
-{
+{ 
     
     if (!isset($_POST['process_recharge']) || !wp_verify_nonce($_POST['process_recharge'], 'process_recharge')) {
         
-        exit();
+        return "";
         
     }
 	   $recharge_number = sanitize_text_field($_REQUEST['recharge_number']);
@@ -329,7 +329,7 @@ $url = "http://api.sakshamapp.com/MobileRech?username=" . esc_attr(get_option('a
     $table_name = $wpdb->prefix . 'recharge';
      
     $details= "$product_id---$productIDN -- Recharge request for the $recharge_operator  recharge_number=$recharge_number  amount $recharge_amount and order id $order_id ";
-	
+	aistore2030_checkTable();
     
         $wpdb->query($wpdb->prepare("INSERT INTO $table_name (user_id,recharge_number,
 recharge_amount,recharge_operator, description,url_hit,ip_address ) VALUES (%d, %s,%s,%s,%s, %s  ,%s )", array(
@@ -426,11 +426,29 @@ recharge_amount,recharge_operator, description,url_hit,ip_address ) VALUES (%d, 
 
 
 		
-		
-		
- 
+		/*
+	
+add_action( 'woocommerce_order_status_pending', 'processRechargeStep3', 10, 1);
+add_action( 'woocommerce_order_status_failed', 'processRechargeStep3', 10, 1);
+add_action( 'woocommerce_order_status_on-hold', 'processRechargeStep3', 10, 1);
+// Note that it's woocommerce_order_status_on-hold, and NOT on_hold.
+add_action( 'woocommerce_order_status_processing', 'processRechargeStep3', 10, 1);
+add_action( 'woocommerce_order_status_completed', 'processRechargeStep3', 10, 1);
+add_action( 'woocommerce_order_status_refunded', 'processRechargeStep3', 10, 1);
+add_action( 'woocommerce_order_status_cancelled', 'processRechargeStep3', 10, 1);	
+ */
 add_action( 'woocommerce_order_status_completed', 'processRechargeStep3', 10, 1);
  
+
+ 
+ add_action( 'woocommerce_init', 'aistore2030_force_non_logged_user_wc_session' );
+function aistore2030_force_non_logged_user_wc_session(){ 
+    if( is_user_logged_in() || is_admin() )
+       return;
+
+    if ( ! WC()->session->has_session() ) 
+       WC()->session->set_customer_session_cookie( true ); 
+}
 
  
  include "util.php";
@@ -438,3 +456,6 @@ add_action( 'woocommerce_order_status_completed', 'processRechargeStep3', 10, 1)
  include "activate.php";
  
   include "settings.php";
+  
+  
+  include "process_callback.php";

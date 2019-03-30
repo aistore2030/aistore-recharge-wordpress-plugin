@@ -47,10 +47,10 @@ exit();
         <th>Operator </th>
         <th>Amount</th>
        
-           <th>Status</th> 
+           <th>Status</th> 
          <th>Operator ID</th>       
          
-      
+      
     </tr>
 </thead> 
 
