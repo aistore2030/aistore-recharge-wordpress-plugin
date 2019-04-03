@@ -1,53 +1,16 @@
 <?php
 /**
  * Plugin Name: AIStore Recharge
- * Plugin URI:  https://example.com/plugins/the-basics/
+ * Plugin URI:  http://www.aistore2030.com
  * Description: AIStore Recharge Plugins using this you can provide rechagre services from your website and you can make profit from this.
- * Version:     1.0
+ * Version:     1.3
  * Author:      susheelhbti
  * Author URI:  http://www.aistore2030.com
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
 
-function aistore2030_recharge_plugin_install()
-{
-    global $wpdb;
-    
-    
-    $table_name       = $wpdb->prefix . 'recharge';
-	
-	
-	if ($wpdb->get_var("show tables like '$table_name '") != $table_name) {
-        $sql = "CREATE TABLE " . $table_name . " (
- `id` int(10) NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) NOT NULL,
-  `recharge_number` varchar(10) NOT NULL,
-  `recharge_operator` varchar(25) NOT NULL,
-  `recharge_amount` int(5) NOT NULL,
-  `start_balance` int(10) NOT NULL,
-  `end_balance` int(10) NOT NULL,
-  `description` varchar(200) NOT NULL,
-  `url_hit` varchar(250) NOT NULL,
-  `url_response` varchar(1000) NOT NULL,
-  `message` varchar(250) NOT NULL,
-  `api_resp_id` varchar(250) NOT NULL,
-  `operator_transaction_id` varchar(250) NOT NULL,
-  `status_url` varchar(500) NOT NULL,
-  `status_response` varchar(500) NOT NULL,
-  `ip_address` varchar(20) NOT NULL,
-  `status` varchar(10) NOT NULL DEFAULT 'Success',
-  `Error` varchar(10) NOT NULL,
-  PRIMARY KEY (`id`)  	 
-		);";
-        
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
-    }
-    
-}
-// run the install scripts upon plugin activation
-register_activation_hook(__FILE__, 'aistore2030_recharge_plugin_install');
+
 
 add_action('admin_menu', 'aistore2030_register_my_custom_menu_page');
 
@@ -55,7 +18,7 @@ function aistore2030_register_my_custom_menu_page()
 {
     
 	
-    add_menu_page('Recharge', 'Recharge ', 'read', 'aistore2030_recharge', 'aistore2030_complete_recharge_report', '', 51);
+    add_menu_page('Recharge', 'Recharge ', 'read', 'aistore2030_recharge', 'aistore2030_complete_recharge_report_admin', '', 51);
     
 
 	 add_submenu_page('aistore2030_recharge', 'Aistore Recharge', 'Settings', 'administrator', 'aistore_recharge_settings_page', 'aistore_recharge_settings_page');
@@ -67,176 +30,42 @@ function aistore2030_register_my_custom_menu_page()
 }
 
 
-
-
-
+function aistore2030_complete_recharge_report_admin()
+{
+    
+     ob_start(); 
+include "template/report.php";
+     echo  ob_get_clean();
+    
+    
+}
 
 function aistore2030_complete_recharge_report()
 {
-   
-   
-
-
-if (!class_exists('Woo_Wallet_Wallet')) {
-    echo "In order to use this recharge plugin you need to install two following plugins
-<br />
-1 Woocommerce<br />
-2 WooCommerce Wallet – credit, cashback, refund system (https://wordpress.org/plugins/woo-wallet/)
-
-";
-exit();
-}
-
-
-
-   $user = wp_get_current_user();
-    
-    
-    $id = $user->ID;
-    
-    global $wpdb;
-    $user_id = $id;
-    
-    $table_name = $wpdb->prefix . 'recharge';
-    if (current_user_can('administrator')) {
-        
-        $qr = "SELECT *   FROM $table_name    order by id desc  limit 50";
-        
-    } else {
-        $qr = "SELECT *   FROM $table_name where user_id=$id   order by id desc   limit 50";
-    }
-    
-    
-    echo "<h2>Your recent recharge (Recent 50 Records )</h2>";
-    
-    
-    
-    $result = $wpdb->get_results($qr);
-?>
-<p>Admin can see all users report and user will see his own recharge report </p>
- <table class="widefat"> 
  
-
- <thead>
-    <tr>
-        <th>Recharge ID</th>
-		 <th>User ID</th>       
-        <th>Number / Connection ID</th>       
-        <th>Operator </th>
-        <th>Amount</th>
-        <th>Start Balance </th>
-        <th>End Balance </th>
-		
-        
-         <th>Operator ID</th>       
-         
-         <th>Status</th>
-    </tr>
-</thead> 
-
-<?php
-    
-    foreach ($result as $wp_formmaker_submits) {
-        
-        
-        echo "<tr>";
-        echo "<td>" . $wp_formmaker_submits->id . "</td>";
-        echo "<td>" . $wp_formmaker_submits->user_id . "</td>";
-        echo "<td>" . $wp_formmaker_submits->recharge_number . "</td>";
-        echo "<td>" . $wp_formmaker_submits->recharge_operator . "</td>";
-        
-        echo "<td>" . $wp_formmaker_submits->recharge_amount . "</td>";
-        
-        echo "<td>" . $wp_formmaker_submits->start_balance . "</td>";
-        echo "<td>" . $wp_formmaker_submits->end_balance . "</td>";
-        
-        
-        
-		
-        
-        
-        echo "<td>" . $wp_formmaker_submits->operator_transaction_id . "</td>";
-        echo "<td>" . $wp_formmaker_submits->status_response . "</td>";
-        
-        
-        
-        
-        
-        echo "</tr>";
-    }
-    
-    
-    echo "</table>";
-    
-    
+ 
+  //processRechargeStep3($_REQUEST['i']);
+	  
+	  
+     ob_start();	 
+include "template/report.php";
+     return ob_get_clean();
     
     
 }
 
-
-
-
-
- 
 
 
 function aistore2030_prepaid_recharge_form()
 {
-     
-    
-	
-    
-    	global $wp;
+   	global $wp;
  $current_url = home_url( add_query_arg( array(), $wp->request )	 );
 
  $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
-	
-    
-    
-?>
-
-
  
- <h2>Prepaid Recharge Form  </h2> 
-
- <form method="post" action="<?php echo $url2; ?>">
-  
-   
-Number
-<input type="text" name="recharge_number" value="" />
-
-Operator
-<select name="recharge_operator">
-<option value="0">Select Operator:</option>
-<option value='Airtel'>Airtel</option> 
-<option value='Idea'>Idea </option>
-<option value='BT'>Bsnl Topup </option>
-<option value='BSNL Special'>BSNL SPECIAL TARIFF </option>
-<option value='RelianceJio'>Reliance Jio </option> 
-<option value='Docomo'>Tata Docomo Topup </option>
-<option value='DocomoSpecial'>Tata Docomo Special </option>
-<option value='TataIndicom'>Tata Indicom </option>
-<option value='Vodafone'>Vodafone </option>
-<option value='MTS'>MTS </option>
-
-
-</select>
- 
-	
-Recharge  Amount
-<input type="text" name="recharge_amount" value="" required />
-	
-   
-<?php wp_nonce_field('process_recharge', 'process_recharge'); ?>
-   
-<input type="submit" value="Process Recharge" />
-</form>
-         
-    
-	
-      <?php
-    
-    
+     ob_start(); 
+include "template/prepaid.php";
+     return ob_get_clean();
     
 }
 
@@ -245,69 +74,15 @@ Recharge  Amount
 function aistore2030_dth_recharge_form()
 {
  
-    
-	
-    
     	global $wp;
  $current_url = home_url( add_query_arg( array(), $wp->request )	 );
 
  $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
 	
-    
-    
-?>
-
-
- 
- <h2>DTH Recharge Form  </h2> 
-
- 
- 
-  
-            
-            <form method="post" action="<?php    echo $url2; ?>">
-  
-   
-   Number
-    <input type="text" name="recharge_number" value="8840574997" />
-	
-	
-   Operator
-    
-  <select name="recharge_operator">
- 
- <option value="0">Select Operator:</option>
-<option value='VideoconD2H'>VIDEOCON DTH </option>
-<option value='SunDirect'>SUN DTH </option>
-<option value='BIGtv'>BIG TV DTH </option>
-<option value='TataSky'>TATA SKY DTH </option>
-<option value='AirtelDTH'>AIRTEL DTH </option>
-<option value='DishTV'>DISH DTH </option>
-
-</select>
- 
-	
-	
- Recharge  Amount
-    <input type="text" name="recharge_amount" value=""  required />
-	
-   
-   <?php
-    wp_nonce_field('process_recharge', 'process_recharge');
-?>
-   
-   <input type="submit" value="Process Recharge" />
-</form>
-         
-    
-	
-      <?php
-    
-    
-    
+ob_start();  
+include "template/dth.php";
+return ob_get_clean();   
 }
-
-
 
 
 
@@ -315,64 +90,15 @@ function aistore2030_dth_recharge_form()
 function aistore2030_postpaid_recharge_form()
 {
  
- 
-    
-	
    
 	global $wp;
  $current_url = home_url( add_query_arg( array(), $wp->request )	 );
 
  $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
 	
-    
-?>
-
-
- 
- <h2>Postpaid Recharge Form  </h2> 
-
- 
- 
-  
-            
-            <form method="post" action="<?php    echo $url2; ?>">
-  
-   
-   Number
-    <input type="text" name="recharge_number" value="8840574997" />
-	
-	
-   Operator
-    
-  <select name="recharge_operator">
- 
- <option value="0">Select Operator:</option>
-  <option value="AirtelPostpaid">AIRTEL POSTPAID</option>
-	
-	 <option value="BsnlPostpaid">BSNL POSTPAID</option>
-    <option value="IdeaPostpaid">IDEA POSTPAID</option>
-    <option value="VodafonePostpaid">VODAFONE POSTPAID</option>
-	
-	  
-</select>
- 
-	
-	
- Recharge  Amount
-    <input type="text" name="recharge_amount" value=""  required />
-	
-   
-   <?php
-    wp_nonce_field('process_recharge', 'process_recharge');
-?>
-   
-   <input type="submit" value="Process Recharge" />
-</form>
-         
-		 
-      <?php
-    
-    
+ob_start();
+include "template/postpaid.php";
+return ob_get_clean();
     
 }
 
@@ -381,194 +107,240 @@ function aistore2030_postpaid_recharge_form()
 
 
 function processRechargeStep2()
-{
+{ 
     
     if (!isset($_POST['process_recharge']) || !wp_verify_nonce($_POST['process_recharge'], 'process_recharge')) {
         
-        exit();
+        return "";
         
     }
+	   $recharge_number = sanitize_text_field($_REQUEST['recharge_number']);
     
     
-    $user = wp_get_current_user();
-    
-    $id = $user->ID;
-    
-    
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'recharge';
-    
-    
-    $wallet = new Woo_Wallet_Wallet();
-    
-    
-    $recharge_number = sanitize_text_field($_REQUEST['recharge_number']);
-    
-    
-    $recharge_amount   = sanitize_text_field($_REQUEST['recharge_amount']);
     $recharge_operator = sanitize_text_field($_REQUEST['recharge_operator']);
-    
-    $balance = $wallet->get_wallet_balance($id);
-    
-    
-  global $wp;
-
-	$current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
+	   
+    $recharge_amount   = sanitize_text_field($_REQUEST['recharge_amount']);
 	
- $url3 =	  esc_url( add_query_arg( 'step', 'three', $current_url ) ); 
- 
- 
-    
-?>
-	
- <h2>Please confirm recharge details   </h2> 
-	<h3> Once proceeds this can not be refunded </h3>
-	<table border="1">
-	
-	<tr>
-	
-	<td> Recharge Number /Consumer Number </td>
-	
-	<td><?php
-    echo $recharge_number;
-?>  </td>
-	
-	</tr>
-	
-	<tr>
-	
-	<td> Operator </td>
-	
-	<td><?php
-    echo $recharge_operator;
-?>  </td>
-	
-	</tr><tr>
-	
-	<td>  Amount </td>
-	
-	<td><?php
-    echo $recharge_amount;
-?> INR  </td>
-	
-	</tr>
-	<tr>
-	
-	<td> Your Current Balance </td>
-	
-<td><?php
-    echo $balance;
-?>  </td>
-	
-	</tr>
-	
-	
-	<tr>
-	
-	<td>  </td>
-	
-	<td>
- 
- 
- <?php
-    if ($balance >= $recharge_amount) {
-        
-?>
+		 $product = aistore_get_wallet_rechargeable_product();
+	  
+	  WC()->cart->empty_cart();
+	  
+	  $cart_item_data = array('price' => $recharge_amount,'recharge_number' => $recharge_number,'recharge_operator' => $recharge_operator);
+	 
+	  
+	  
+	WC()->cart->add_to_cart( $product->get_id() , 1, '', array(), $cart_item_data);
+	 
+	  
   
-            <form method="post" action="<?php
-        echo $url3;
-?>">
-   
+	
+ob_start(); 
+include  "template/step2.php";
+return ob_get_clean();
  
-    <input type="hidden" name="recharge_operator" value="<?php
-        echo $recharge_operator;
-?>" />
-	
-	 <input type="hidden" name="recharge_number" value="<?php
-        echo $recharge_number;
-?>" />
-	
-	
-   
-    <input type="hidden" name="recharge_amount" value="<?php
-        echo $recharge_amount;
-?>" />
-	
-   
-     <?php
-        wp_nonce_field('process_recharge', 'process_recharge');
-?>
-   
-   <input type="submit" value="Complete Recharge " />
-</form>
-         
-		 
-		 <?php
-        
-    } else {
-        echo "<b>Low balance Recharge can not process</b>";
-        
-    }
-?>
-
-	 </td>
-	
-	</tr>
-	</table>
-	
-	<?php
-    
-    
+ 
     
 }
 
 
 
-function processRechargeStep3()
-{
-    if (!isset($_POST['process_recharge']) || !wp_verify_nonce($_POST['process_recharge'], 'process_recharge')) {
-        
-        exit();
-        
+
+function aistore2030_manage_forms_step($type )
+{  $step = "one";
+    
+    
+    if (isset($_REQUEST['step'])) {
+        $step = $_REQUEST['step'];
     }
     
+    $step = sanitize_text_field($step);
+    
+    
+    if ($step == "one") {
+        
+		if ($type == "prepaid") {
+       return  aistore2030_prepaid_recharge_form();
+    } else if ($type == "dth") {
+             return    aistore2030_dth_recharge_form();
+         
+    } else if ($type == "postpaid") {
+            return    aistore2030_postpaid_recharge_form() ;
+    }
+	
+	
+    } else if ($step == "two") {
+        
+        
+    return    processRechargeStep2();
+		 
+    }  
+    
+    
+}
+
+ // type prepaid , postpaid , dth 
+function aistore2030_recharge_form($atts)
+{
+	 
+	
+	 return aistore2030_manage_forms_step($atts['type'] );
+ 
+}
+ 
+ 
+add_shortcode( 'AISTORERECHARGEFORM', 'aistore2030_recharge_form' );
+
+add_shortcode( 'AistoreRechargeReport', 'aistore2030_complete_recharge_report' );
+
+
+
+
+
+
+
+
+
+function iconic_display_engraving_text_cart( $item_data, $cart_item ) {
+	if ( empty( $cart_item['recharge_operator'] ) ) {
+	return $item_data;
+	}
+
+
+	if ( empty( $cart_item['recharge_number'] ) ) {
+	return $item_data;
+	}
+	
+	$item_data[] = array(
+		'key'     => __( 'Number', 'aistore' ),
+		'value'   => wc_clean( $cart_item['recharge_number'] ),
+		'display' => '',
+	);
+
+	
+		$item_data[] = array(
+		'key'     => __( 'Operator', 'aistore' ),
+		'value'   => wc_clean( $cart_item['recharge_operator'] ),
+		'display' => '',
+	);
+	
+	return $item_data;
+}
+
+ add_filter( 'woocommerce_get_item_data', 'iconic_display_engraving_text_cart', 10, 2 );
+
+
+
+function aistore2030_add_text_to_order_items( $item, $cart_item_key, $values, $order ) {
+	if ( empty( $values['recharge_number'] ) ) {
+		return;
+	}
+	
+	if ( empty( $values['recharge_operator'] ) ) {
+		return;
+	}
+	
+	
+$item->add_meta_data( __( 'recharge_number', 'aistore' ), $values['recharge_number'] );
+	$item->add_meta_data( __( 'recharge_operator', 'aistore' ), $values['recharge_operator'] );
+}
+
+add_action( 'woocommerce_checkout_create_order_line_item', 'aistore2030_add_text_to_order_items', 10, 4 );
+
+
+
+add_action( 'woocommerce_before_calculate_totals', 'aistore2030_add_custom_price' );
+function aistore2030_add_custom_price( $cart ) {
+    foreach ( $cart->cart_contents as $key => $value ) {
+      if( isset( $value["price"] ) ) {
+		      $value['data']->set_price($value['price']);
+	  } 
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+ add_filter('woocommerce_thankyou_order_received_text', 'woo_change_order_received_text', 10, 2 );
+ 
+ 
+ 
+function woo_change_order_received_text( $str, $order ) {
+	
+	
+	
+	
+ foreach ( $order->get_items() as $key => $item ) {
+	 
+	 $product_id = $item->get_product_id();
+	 $product = aistore_get_wallet_rechargeable_product();
+	 if ($product->get_id() <> $product_id)    return "";
+             
+			 
+				
+				
+    $recharge_operator = wc_get_order_item_meta( $key, 'recharge_operator' );
+   $recharge_number = wc_get_order_item_meta( $key, 'recharge_number' );
+   $recharge_amount = $item->get_total();
+}  
+
+
+    $new_str = 'Recharge for the number '.$recharge_number. ' and operator '.$recharge_operator .' was forwarded to server. Please visit recharge report page to see live status.' ;
+    return $new_str;
+}
+
+
+
+
+
+ function processRechargeStep3($order_id){
+
+ 
+    $order = wc_get_order( $order_id );
+
+	
+	
+ foreach ( $order->get_items() as $key => $item ) {
+    
+$product_id = $item->get_product_id();
+	 $product = aistore_get_wallet_rechargeable_product();
+	 if ($product->get_id() <> $product_id)    return "";
+        
+				
+   $recharge_number = wc_get_order_item_meta( $key, 'recharge_number' );
+   $recharge_amount = $item->get_total();
+    $recharge_operator = wc_get_order_item_meta( $key, 'recharge_operator' );
+	 
     $user = wp_get_current_user();
     
     $id = $user->ID;
     
-	
-	
-    global $wpdb;
+
+$url = "http://api.sakshamapp.com/MobileRech?username=" . esc_attr(get_option('aistore_username')) . "&password=" . esc_attr(get_option('aistore_password')) . "&recharge_circle=0&recharge_operator=$recharge_operator&recharge_number=$recharge_number&amount=$recharge_amount&format=json&requestID=";
+        
+    global   $wpdb;
+    
     $table_name = $wpdb->prefix . 'recharge';
+     
+    $details= "$product_id---$productIDN -- Recharge request for the $recharge_operator  recharge_number=$recharge_number  amount $recharge_amount and order id $order_id ";
+	aistore2030_checkTable();
     
-    
-    $wallet = new Woo_Wallet_Wallet();
-    
-    
-    $recharge_number   = sanitize_text_field($_REQUEST['recharge_number']);
-    $recharge_amount   = sanitize_text_field($_REQUEST['recharge_amount']);
-    $recharge_operator = sanitize_text_field($_REQUEST['recharge_operator']);
-    
-    
-    $balance = $wallet->get_wallet_balance($id, "int");
-    
-    if ($balance >= $recharge_amount) {
-        $details = 'Recharge for ' . $_REQUEST['recharge_number'];
-        
-        $url = "http://api.sakshamapp.com/MobileRech?username=" . esc_attr(get_option('aistore_username')) . "&password=" . esc_attr(get_option('aistore_password')) . "&recharge_circle=0&recharge_operator=$recharge_operator&recharge_number=$recharge_number&amount=$recharge_amount&format=json&requestID=";
-        
-        
         $wpdb->query($wpdb->prepare("INSERT INTO $table_name (user_id,recharge_number,
-recharge_amount,recharge_operator,start_balance,description,url_hit,ip_address ) VALUES (%d, %s,%s,%s,%s, %s ,%s ,%s)", array(
+recharge_amount,recharge_operator, description,url_hit,ip_address ) VALUES (%d, %s,%s,%s,%s, %s  ,%s )", array(
             $id,
             $recharge_number,
             $recharge_amount,
             $recharge_operator,
-            $balance,
+           
             $details,
             $url,
-            aistore_getRealIpAddr()
+            aistore_recharge_getRealIpAddr()
         )));
         
         
@@ -580,9 +352,7 @@ recharge_amount,recharge_operator,start_balance,description,url_hit,ip_address )
         $url = $url . $insert_id;
         
         
-        
-        
-        $wallet->debit($id, $recharge_amount, $details);
+         
         
         $response = wp_remote_get($url);
         
@@ -602,300 +372,139 @@ recharge_amount,recharge_operator,start_balance,description,url_hit,ip_address )
         $ar = json_decode($response['body']);
         
         if ($ar->error) {
-            $wallet->credit(1, $recharge_amount, $details = 'Recharge refund ' . $_REQUEST['recharge_number']);
             
-            
-            
-            
-            
-            $balance = $wallet->get_wallet_balance($id, "int");
-            
-            
+    $wallet = new Woo_Wallet_Wallet();
+ 
+
+ $wallet->credit(1, $recharge_amount, $details = 'Recharge refund ' .$recharge_number);
+              
+      
+        
+
+		
             $wpdb->query($wpdb->prepare("update $table_name 
  set 
   status  = 'Failure',
     message  = %s,
-	Error  = %s,
-    end_balance  = %d
+	Error  = %s 
  where
   id  = %d   
   ", array(
                 "Recharge is failure",
-                $ar->error,
-                $balance,
+                $ar->error ,
                 $insert_id
             )));
             
         }
         
         else {
-            
-            $balance = $wallet->get_wallet_balance($id);
+             
             
             
             $wpdb->query($wpdb->prepare("update $table_name 
  set 
   status  =%s,
     message  = %s,
-	Error  = %s,
-    end_balance  = %d
+	Error  = %s 
  where
   id  = %d   
   ", array(
                 $ar->Status,
                 "Recharge is success",
                 $ar->error,
-                $balance,
+                
                 $insert_id
             )));
             
             
         }
-        
-?>
-  
-   
-	 <h2>Request for the recharge/payment was completed.  </h2> 
- 
-	
-	<table border="1">
-	
-	<tr>
 		
-	<td> Recharge Number /Consumer Number </td>
-	
-	<td><?php
-        echo $recharge_number;
-?>  </td>
-	
-	</tr>
-	<tr>
-	
-	<td> Operator </td>
-	
-	<td><?php
-        echo $recharge_operator;
-?>  </td>
-	
-	</tr>
-	<tr>
-	
-	<td>Amount </td>
-	
-	<td><?php
-        echo $recharge_amount;
-?> INR </td>
-	
-	</tr>
-	<tr>
-	
-	<td> Final Balance </td>
-	
-<td><?php
-        echo $balance;
-?>  INR</td>
-	
-	</tr>
+ 	}
 	
 	
-	<tr>
+}  
+
+
+		
+		/*
 	
-	<td>Current Status  </td>
-	
-	<td>
+add_action( 'woocommerce_order_status_pending', 'processRechargeStep3', 10, 1);
+add_action( 'woocommerce_order_status_failed', 'processRechargeStep3', 10, 1);
+add_action( 'woocommerce_order_status_on-hold', 'processRechargeStep3', 10, 1);
+// Note that it's woocommerce_order_status_on-hold, and NOT on_hold.
+add_action( 'woocommerce_order_status_processing', 'processRechargeStep3', 10, 1);
+add_action( 'woocommerce_order_status_completed', 'processRechargeStep3', 10, 1);
+add_action( 'woocommerce_order_status_refunded', 'processRechargeStep3', 10, 1);
+add_action( 'woocommerce_order_status_cancelled', 'processRechargeStep3', 10, 1);	
+ */
+add_action( 'woocommerce_order_status_completed', 'processRechargeStep3', 10, 1);
  
- Request submitted successfully.
-   
-		 
-		 
-
-	 </td>
-	
-	</tr>
-	</table>
-	
-	
-	<?php
-    } else {
-        
-        echo "Balance low ";
-        $balance = $wallet->get_wallet_balance($id);
-        
-        echo $balance;
-        
-    }
-    
-    
-}
-
-
-
-
-
-
-
-
-function aistore_getRealIpAddr()
-{
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) //check ip from share internet
-        {
-        $ip = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) //to check ip is pass from proxy
-        {
-        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    } else {
-        $ip = $_SERVER['REMOTE_ADDR'];
-    }
-    return $ip;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function aistore_recharge_settings_group()
-{
-    //register our settings
-    register_setting('aistore_recharge_group', 'aistore_username');
-    register_setting('aistore_recharge_group', 'aistore_password');
-}
-
-function aistore_recharge_settings_page()
-{
-?>
-<div class="wrap">
-<h1>Aistore Recharge </h1>
-<p>This form is visible to only admin </p>
-
-
-<P> Talk to the support at <a href="https://api.whatsapp.com/send?phone=919682780263&text=Hello%20I%20need%20support%20for%20the%20Recharge%20plugin" target="_blank" >Talk to whatsapp +91 9682780263</a>
 
  
-<h2>Create  4 Pages </h2>
-<p>Page 1 for prepaid recharge form and insert this shortcode [ AistorePrepaid ]  Remove spaces </p>
+ add_action( 'woocommerce_init', 'aistore2030_force_non_logged_user_wc_session' );
+function aistore2030_force_non_logged_user_wc_session(){ 
+    if( is_user_logged_in() || is_admin() )
+       return;
 
-<p>Page 2 for postpaid recharge form and insert this shortcode [ AistorePostpaid ]  Remove spaces</p>
+    if ( ! WC()->session->has_session() ) 
+       WC()->session->set_customer_session_cookie( true ); 
+}
 
 
-<p>Page 3 for DTH recharge form and insert this shortcode [ AistoreDTH ] Remove spaces  </p>
 
-<p>Page 4 for report of recharge   and insert this shortcode [ AistoreRechargeReport ]  Remove spaces </p>
+ 
+add_action('rest_api_init', function () {
+    register_rest_route('aistoreRecharge/v1', '/AcceptCallback', array(
+        'methods' => 'GET',
+        'callback' => 'aistoreRecharge_secure_callback_accept_func',
+    ));
+});
+
+function aistoreRecharge_secure_callback_accept_func(WP_REST_Request $data) {
+
+    $insert_id = $data['txid'];
+
+    $url = "http://api.sakshamapp.com/Status?username=" . esc_attr(get_option('aistore_username')) . "&password=" . esc_attr(get_option('aistore_password')) . "&txid=" . $insert_id . "&format=json";
 
 
+    $response = wp_remote_get($url);
+
+
+
+    $ar = json_decode($response['body']);
+
+
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'recharge';
+
+    $wpdb->query($wpdb->prepare("update $table_name 
+ set  status  = %s,
+ status_url  = %s,
+ status_response  = %s,
+ operator_transaction_id= %s
+ where  id  = %d   
+  ", array(
+                $ar->Status,
+                $url,
+                $response['body'],
+                $ar->op_txid,
+                $insert_id
+    )));
+
+
+
+
+    return $data['txid'];
+}
+
+
+ 
+ include "util.php";
+ 
+ include "activate.php";
+ 
+  include "settings.php";
   
-
-<form method="post" action="options.php">
-    <?php
-    settings_fields('aistore_recharge_group');
-?>
-    <?php
-    do_settings_sections('aistore_recharge_group');
-?>
-    <table class="form-table">
-        <tr valign="top">
-        <th scope="row">API Username</th>
-        <td><input type="text" name="aistore_username" value="<?php
-    echo esc_attr(get_option('aistore_username'));
-?>" /></td>
-        </tr>
-         
-        <tr valign="top">
-        <th scope="row">API Password</th>
-        <td><input type="text" name="aistore_password" value="<?php
-    echo esc_attr(get_option('aistore_password'));
-?>" /></td>
-        </tr>
-        
-        
-    </table>
-    
-    <?php
-    submit_button();
-?>
-<p>You can get username and password via registering api.sakshamapp.com </p>
-</form> 
-
-<h3>Please note that if you want to handle the call back you will need and an add on plugin aistore-recharge-secure-callback plugin which you can purchase in just Rs 1000 <a href="https://api.whatsapp.com/send?phone=919682780263&text=Hello%20I%20need%20aistore-recharge-secure-callback%20for%20the%20Recharge%20plugin" target="_blank" >Talk to whatsapp +91 9682780263</a> </h3>
-</div>
-<?php
-}
- 
-    
-
-
-
-function aistore2030_manage_forms_step($type )
-{  $step = "one";
-    
-    
-    if (isset($_REQUEST['step'])) {
-        $step = $_REQUEST['step'];
-    }
-    
-    $step = sanitize_text_field($step);
-    
-    
-    if ($step == "one") {
-        
-		if ($type == "prepaid") {
-         aistore2030_prepaid_recharge_form();
-    } else if ($type == "dth") {
-        aistore2030_dth_recharge_form();
-         
-    } else if ($type == "postpaid") {
-       aistore2030_postpaid_recharge_form() ;
-    }
-	
-	
-    } else if ($step == "two") {
-        
-        
-        processRechargeStep2();
-		 
-    } else if ($step == "three") {
-        processRechargeStep3();
-		  
-    }
-    
-    
-}
-
-
-function aistore2030_prepaid_form()
-{
-	aistore2030_manage_forms_step("prepaid" );
-}
-     
- function aistore2030_postpaid_form()
-{
-	aistore2030_manage_forms_step("postpaid" );
-}
-     
-	 function aistore2030_dth_form()
-{
-	aistore2030_manage_forms_step("dth" );
-}
-     function aistore2030_recharge_report()
-{
-	aistore2030_complete_recharge_report();
-}
-	 
- 
-add_shortcode( 'AistorePrepaid', 'aistore2030_prepaid_form' );
- 
-add_shortcode( 'AistorePostpaid', 'aistore2030_postpaid_form' );
- 
- add_shortcode( 'AistoreDTH', 'aistore2030_dth_form' );
-
-
- add_shortcode( 'AistoreRechargeReport', 'aistore2030_recharge_report' ); 
+  
+  
