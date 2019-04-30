@@ -3,14 +3,32 @@
  * Plugin Name: AIStore Recharge
  * Plugin URI:  http://www.aistore2030.com
  * Description: AIStore Recharge Plugins using this you can provide rechagre services from your website and you can make profit from this.
- * Version:     1.3
+ * Version:     1.3.1
  * Author:      susheelhbti
  * Author URI:  http://www.aistore2030.com
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
 
+ 
+if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+ 
+} else {
+	add_action( 'admin_notices', 'aistore_recharge_notice' );
+}
 
+/**
+ * 
+ * @todo Notice admin to activate WooCommerce Plugin
+ */
+function aistore_recharge_notice() {
+	echo '<div class="error"><p><strong> <i> Aistore Recharge </i> </strong> Requires  <a href="'.admin_url( 'plugin-install.php?tab=plugin-information&plugin=woocommerce').'"> <strong> <u>Woocommerce</u></strong>  </a>  To Be Installed And Activated </p></div>';
+}
+
+
+
+register_activation_hook( __FILE__, array( 'Aistore_Install', 'install' ) );
+ 
 
 add_action('admin_menu', 'aistore2030_register_my_custom_menu_page');
 
@@ -24,6 +42,10 @@ function aistore2030_register_my_custom_menu_page()
 	 add_submenu_page('aistore2030_recharge', 'Aistore Recharge', 'Settings', 'administrator', 'aistore_recharge_settings_page', 'aistore_recharge_settings_page');
     
     
+
+	 add_submenu_page('aistore2030_recharge', 'Aistore Recharge', 'How to setup', 'administrator', 'aistore_recharge_howtosetup_page', 'aistore_recharge_howtosetup_page');
+	 
+	 
     add_action('admin_init', 'aistore_recharge_settings_group');
     
     
@@ -103,15 +125,145 @@ return ob_get_clean();
 }
 
 
+function aistore2030_electricity_recharge_form()
+{
+ 
+   
+	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
+ob_start();
+include "template/electricity.php";
+return ob_get_clean();
+    
+}
+function aistore2030_gas_recharge_form()
+{
+ 
+   
+	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
+ob_start();
+include "template/gas.php";
+return ob_get_clean();
+    
+}
+function aistore2030_broadband_recharge_form()
+{
+ 
+    	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
+ob_start();  
+include "template/broadband.php";
+return ob_get_clean();   
+}
 
 
 
+
+function aistore2030_landline_recharge_form()
+{
+ 
+   
+	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
+ob_start();
+include "template/landline.php";
+return ob_get_clean();
+    
+}
+
+
+function aistore2030_water_recharge_form()
+{
+ 
+   
+	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
+ob_start();
+include "template/water.php";
+return ob_get_clean();
+    
+}
+function aistore2030_creditcard_recharge_form()
+{
+ 
+   
+	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
+ob_start();
+include "template/creditcard.php";
+return ob_get_clean();
+    
+}
+
+function aistore2030_loanemi_recharge_form()
+{
+ 
+   
+	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
+ob_start();
+include "template/loanemi.php";
+return ob_get_clean();
+    
+}
+
+
+function aistore2030_insurance_recharge_form()
+{
+ 
+   
+	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
+ob_start();
+include "template/insurance.php";
+return ob_get_clean();
+    
+}
+function aistore2030_cabletv_recharge_form()
+{
+ 
+   
+	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
+ob_start();
+include "template/cabletv.php";
+return ob_get_clean();
+    
+}
 function processRechargeStep2()
 { 
     
     if (!isset($_POST['process_recharge']) || !wp_verify_nonce($_POST['process_recharge'], 'process_recharge')) {
         
-        return "";
+        return "Some Technical Error";
         
     }
 	   $recharge_number = sanitize_text_field($_REQUEST['recharge_number']);
@@ -166,8 +318,29 @@ function aistore2030_manage_forms_step($type )
     } else if ($type == "postpaid") {
             return    aistore2030_postpaid_recharge_form() ;
     }
-	
-	
+	else if ($type == "electricity") {
+            return    aistore2030_electricity_recharge_form() ;
+    }else if ($type == "gas") {
+            return    aistore2030_gas_recharge_form() ;
+    }
+	 else if ($type == "broadband") {
+             return    aistore2030_broadband_recharge_form();
+         
+    } else if ($type == "landline") {
+            return    aistore2030_landline_recharge_form() ;
+    }
+	else if ($type == "water") {
+            return    aistore2030_water_recharge_form() ;
+    }else if ($type == "creditcard") {
+            return    aistore2030_creditcard_recharge_form() ;
+    } else if ($type == "loanemi") {
+            return    aistore2030_loanemi_recharge_form() ;
+    }
+	else if ($type == "insurance") {
+            return    aistore2030_insurance_recharge_form() ;
+    }else if ($type == "cabletv") {
+            return    aistore2030_cabletv_recharge_form() ;
+    }
     } else if ($step == "two") {
         
         
@@ -507,4 +680,7 @@ function aistoreRecharge_secure_callback_accept_func(WP_REST_Request $data) {
   include "settings.php";
   
   
+  
+ 
+  include "howto.php";
   

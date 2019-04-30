@@ -1,7 +1,7 @@
 
       <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
    
- <h2>DTH Recharge Form  </h2> 
+ <h2>Landline Recharge Form  </h2> 
 
  <div ng-app = "myapp" ng-controller = "HelloController">
  <div class="col-md-6">
@@ -70,31 +70,8 @@ Recharge  Amount
          
          .controller("HelloController", function($scope,$http,) {
              $scope.myData = [
-	     {
-        "operator": "Airtel Digital TV",
-        "code": "AirtelDigitalTV"
-    },
-    {
-        "operator": "BIG TV",
-        "code": "BIGtv"
-    },
-    {
-        "operator": "DISH TV",
-        "code": "DishTV"
-    },
-    {
-        "operator": "TATASKY DTH TV",
-        "code": "TataSky"
-    },
-    {
-        "operator": "VIDEOCON DTH TV",
-        "code": "VideoconD2H"
-    },
-    {
-        "operator": "Sun Direct",
-        "code": "SunDirect"
-    }
-]
+    
+];
 
              $scope.sendRecharge = function (recharge) {
         console.log(recharge);

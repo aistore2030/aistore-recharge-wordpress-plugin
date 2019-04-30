@@ -1,76 +1,74 @@
 
+<html>
+    <head>
+         <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+        <link href="./assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="./assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="./assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="./assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <!-- END GLOBAL MANDATORY STYLES -->
+        <!-- BEGIN THEME GLOBAL STYLES -->
+        <link href="./assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="./assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
+        <!-- END THEME GLOBAL STYLES -->
+        <!-- BEGIN THEME LAYOUT STYLES -->
+        <link href="./assets/layouts/layout4/css/layout.min.css" rel="stylesheet" type="text/css" />
+        <link href="./assets/layouts/layout4/css/themes/default.min.css" rel="stylesheet" type="text/css" id="style_color" />
+        <link href="./assets/layouts/layout4/css/custom.min.css" rel="stylesheet" type="text/css" />
+        <!-- END THEME LAYOUT STYLES -->
+        <link rel="shortcut icon" href="favicon.ico" />
+     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.css" type="text/css" media="all" />
 
-      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-   
+         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Recharge</title>
+    </head>
+    <body ng-app = "myapp">
+      
+           
+              <div  ng-controller = "HelloController" >
+                 <div class="col-md-6">
+    <div class="portlet light bordered">
+        <div class=" portlet-body"> 
 
- <h2>Prepaid Recharge Form  </h2> 
+            <h1>Mobile Recharge</h1>
+            <form>
+                <div class="form-group">
+                    <label for="mobile">Mobile Number </label>
 
- <div ng-app = "myapp" ng-controller = "HelloController">
- <div class="col-md-6">
- <form method="post" action="<?php echo $url2; ?>">
+                    <input  class="form-control" length="10"  ng-change="getOperator()" ng-model="recharge.mobile" type="text" name="recharge_number"  maxlength="10" >
 
-  <table  class="table">
-
-  
-
-
-
-  <tr><td>
-
-Number</td><td>
-
-<input length="10"  ng-change="getOperator()" ng-model="recharge.mobile" type="text" name="recharge_number"  maxlength="10"/>
-
-</td></tr>
-
-
-
-<tr><td>
-
-Operator</td><td>
- <select class="form-control" ng-model="recharge.Operator" name="mobile_operator"  autocomplete="on">
+                </div>
+                <div class="form-group">
+                    <label for="Operator">Operator </label>
+                    <select class="form-control" ng-model="recharge.Operator" name="mobile_operator"  autocomplete="on">
                         <option ng-repeat="operators in myData1"   ng-selected="goperator === operators.id" value="{{operators.id}}">
                             {{operators.name}}
                         </option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label for="Circle">Circle </label>
+                    <select class="form-control" ng-model="recharge.Circle" name="recharge_circle"    autocomplete="on">
+                        <option ng-repeat="circle in myData2" ng-selected="gcircle === circle.id" value="{{circle.id}}">
+                            {{circle.name}}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Amount">Amount</label>
+                    <input class="form-control" type="text" ng-model="recharge.amount" name="amount"  autocomplete="on" maxlength="4" class="rupee">
+
+                </div>
+                <a  ng-click="sendRecharge(recharge)" class="btn btn-primary "  > Proceed To Recharge </a>
 
 
- </td></tr>
 
- 
-
- 
-
- 
-
- <tr><td>
-
-	
-
-Recharge  Amount
-
-</td><td>
-
-<input type="text" name="recharge_amount" value="" required />
-
-	
-
-   </td></tr>
-
-   
-
-   <tr><td>
-
-<input type="submit" value="Process Recharge" />
-
-</td></tr>
+            </form>
 
 
-</table>
-
-
-</form>
-</div>
+        </div></div></div>
 <div class="col-md-6">
     <div class="portlet light bordered"  ng-show="recharge.mobile.length == 10">
         <div class=" portlet-body"> 
@@ -108,8 +106,7 @@ Recharge  Amount
                 </uib-tabset>
             </form>
         </div>   </div> </div></div>
-</div>
-   <script>
+           <script>
          angular.module("myapp", [])
          
          .controller("HelloController", function($scope,$http,) {
@@ -327,3 +324,19 @@ $scope.myData2 = [
     };
          });
       </script>
+       <script src="./assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        <script src="./assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="./assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+        <script src="./assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        
+        
+        <script src="./assets/global/scripts/app.min.js" type="text/javascript"></script>
+        <!-- END THEME GLOBAL SCRIPTS -->
+        <!-- BEGIN THEME LAYOUT SCRIPTS -->
+        <script src="./assets/layouts/layout4/scripts/layout.min.js" type="text/javascript"></script>
+      
+        <script src="./assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+        <script src="./assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
+
+    </body>
+</html>
