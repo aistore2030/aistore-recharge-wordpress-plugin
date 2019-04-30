@@ -75,19 +75,5 @@ Recharge  Amount
              $scope.myData = [
     
 ];
-
-             $scope.sendRecharge = function (recharge) {
-        console.log(recharge);
-        console.log("recharge amount" + recharge.amount);
-        console.log("MobileRech?requestID=1&amount=" + recharge.amount + "&recharge_operator=" + recharge.Operator + "&recharge_circle=" + recharge.Circle + "&recharge_number=" + recharge.mobile + "&format=json");
-        $http.get("MobileRech?requestID=1&amount=" + recharge.amount + "&recharge_operator=" + recharge.Operator + "&recharge_circle=" + recharge.Circle + "&recharge_number=" + recharge.mobile + "&format=json")
-                .then(function (response) {
-                    console.log(response);
-                    alert(response.data.Message);
-
-                    //$state.go('AllRecharge');
-                });
-
-    };
          });
       </script>

@@ -77,187 +77,6 @@ include "template/report.php";
 }
 
 
-
-function aistore2030_prepaid_recharge_form()
-{
-   	global $wp;
- $current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
- $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
- 
-     ob_start(); 
-include "template/prepaid.php";
-     return ob_get_clean();
-    
-}
-
-
-
-function aistore2030_dth_recharge_form()
-{
- 
-    	global $wp;
- $current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
- $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
-	
-ob_start();  
-include "template/dth.php";
-return ob_get_clean();   
-}
-
-
-
-
-function aistore2030_postpaid_recharge_form()
-{
- 
-   
-	global $wp;
- $current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
- $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
-	
-ob_start();
-include "template/postpaid.php";
-return ob_get_clean();
-    
-}
-
-
-function aistore2030_electricity_recharge_form()
-{
- 
-   
-	global $wp;
- $current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
- $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
-	
-ob_start();
-include "template/electricity.php";
-return ob_get_clean();
-    
-}
-function aistore2030_gas_recharge_form()
-{
- 
-   
-	global $wp;
- $current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
- $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
-	
-ob_start();
-include "template/gas.php";
-return ob_get_clean();
-    
-}
-function aistore2030_broadband_recharge_form()
-{
- 
-    	global $wp;
- $current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
- $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
-	
-ob_start();  
-include "template/broadband.php";
-return ob_get_clean();   
-}
-
-
-
-
-function aistore2030_landline_recharge_form()
-{
- 
-   
-	global $wp;
- $current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
- $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
-	
-ob_start();
-include "template/landline.php";
-return ob_get_clean();
-    
-}
-
-
-function aistore2030_water_recharge_form()
-{
- 
-   
-	global $wp;
- $current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
- $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
-	
-ob_start();
-include "template/water.php";
-return ob_get_clean();
-    
-}
-function aistore2030_creditcard_recharge_form()
-{
- 
-   
-	global $wp;
- $current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
- $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
-	
-ob_start();
-include "template/creditcard.php";
-return ob_get_clean();
-    
-}
-
-function aistore2030_loanemi_recharge_form()
-{
- 
-   
-	global $wp;
- $current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
- $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
-	
-ob_start();
-include "template/loanemi.php";
-return ob_get_clean();
-    
-}
-
-
-function aistore2030_insurance_recharge_form()
-{
- 
-   
-	global $wp;
- $current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
- $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
-	
-ob_start();
-include "template/insurance.php";
-return ob_get_clean();
-    
-}
-function aistore2030_cabletv_recharge_form()
-{
- 
-   
-	global $wp;
- $current_url = home_url( add_query_arg( array(), $wp->request )	 );
-
- $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
-	
-ob_start();
-include "template/cabletv.php";
-return ob_get_clean();
-    
-}
 function processRechargeStep2()
 { 
     
@@ -310,18 +129,34 @@ function aistore2030_manage_forms_step($type )
     
     if ($step == "one") {
         
+           
+	global $wp;
+ $current_url = home_url( add_query_arg( array(), $wp->request )	 );
+
+ $url2 =	  esc_url( add_query_arg( 'step', 'two', $current_url ) ); 
+	
+ob_start();
+        
+        
 		if ($type == "prepaid") {
-       return  aistore2030_prepaid_recharge_form();
+		    
+		    include "template/prepaid.php";
+       //return  aistore2030_prepaid_recharge_form();
     } else if ($type == "dth") {
-             return    aistore2030_dth_recharge_form();
+        include "template/dth.php";
+        
+             //return    aistore2030_dth_recharge_form();
          
     } else if ($type == "postpaid") {
-            return    aistore2030_postpaid_recharge_form() ;
+        include "template/postpaid.php";
+           // return    aistore2030_postpaid_recharge_form() ;
     }
 	else if ($type == "electricity") {
-            return    aistore2030_electricity_recharge_form() ;
+          include "template/electricity.php";
+           // return    aistore2030_electricity_recharge_form() ;
     }else if ($type == "gas") {
-            return    aistore2030_gas_recharge_form() ;
+           include "template/gas.php";
+            //return    aistore2030_gas_recharge_form() ;
     }
 	 else if ($type == "broadband") {
              return    aistore2030_broadband_recharge_form();
@@ -330,17 +165,22 @@ function aistore2030_manage_forms_step($type )
             return    aistore2030_landline_recharge_form() ;
     }
 	else if ($type == "water") {
-            return    aistore2030_water_recharge_form() ;
+	    include "template/water.php";
+            //return    aistore2030_water_recharge_form() ;
     }else if ($type == "creditcard") {
             return    aistore2030_creditcard_recharge_form() ;
     } else if ($type == "loanemi") {
             return    aistore2030_loanemi_recharge_form() ;
     }
 	else if ($type == "insurance") {
-            return    aistore2030_insurance_recharge_form() ;
+	    include "template/insurance.php";
+            //return    aistore2030_insurance_recharge_form() ;
     }else if ($type == "cabletv") {
-            return    aistore2030_cabletv_recharge_form() ;
+           include "template/cable.php";
+           // return    aistore2030_cabletv_recharge_form() ;
     }
+    
+    return ob_get_clean();
     } else if ($step == "two") {
         
         

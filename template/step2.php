@@ -50,7 +50,7 @@ $checkout_url = $woocommerce->cart->get_checkout_url();
 	
 	
 
-meta http-equiv="refresh" content="0;url=<?php echo $checkout_url; ?>" />
+<meta http-equiv="refresh" content="0;url=<?php echo $checkout_url; ?>" />
 
 
 

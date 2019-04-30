@@ -300,16 +300,12 @@ $scope.myData2 = [
                         console.log(response.data);
                         $scope.goperator = response.data.Operator_code;
                         $scope.gcircle = response.data.Circle_code;
-                        /*if (response.data.Operator === "jio" || response.data.Operator === "Jio") {
-                         $scope.recharge.Operator = "J";
-                         $scope.goperator = "J";
-                         }*/
+                      
                         $http.get("http://api.sakshamapp.com/Offer?Operator=" + $scope.recharge.Operator + "&Circle=" + $scope.recharge.Circle)
                                 .then(function (response) {
                                     console.log(response.data);
                                     $scope.myWelcome = response.data;
-                                    // $scope.title = "response.data";
-                                    // $scope.open();
+                                    
                                 });
                     });
         }
@@ -319,18 +315,6 @@ $scope.myData2 = [
      $scope.showamount = function (x) {
         $scope.recharge.amount = x.amount;
     };
-             $scope.sendRecharge = function (recharge) {
-        console.log(recharge);
-        console.log("recharge amount" + recharge.amount);
-        console.log("MobileRech?requestID=1&amount=" + recharge.amount + "&recharge_operator=" + recharge.Operator + "&recharge_circle=" + recharge.Circle + "&recharge_number=" + recharge.mobile + "&format=json");
-        $http.get("MobileRech?requestID=1&amount=" + recharge.amount + "&recharge_operator=" + recharge.Operator + "&recharge_circle=" + recharge.Circle + "&recharge_number=" + recharge.mobile + "&format=json")
-                .then(function (response) {
-                    console.log(response);
-                    alert(response.data.Message);
-
-                    //$state.go('AllRecharge');
-                });
-
-    };
+        
          });
       </script>

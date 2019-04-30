@@ -44,7 +44,7 @@ Recharge  Amount
 
 </td><td>
 
-<input type="text" ng-model="recharge.amount" name="amount"  autocomplete="on" maxlength="4" class="rupee" />
+<input type="text" ng-model="recharge.amount" name="recharge_amount"  autocomplete="on" maxlength="4" class="rupee" />
 
 	
 
@@ -52,7 +52,9 @@ Recharge  Amount
 
    
 
-   <tr><td>
+   <tr>
+         <td><?php wp_nonce_field('process_recharge', 'process_recharge'); ?></td> 
+       <td>
 
 <input type="submit" value="Process Recharge" />
 
@@ -70,21 +72,65 @@ Recharge  Amount
          
          .controller("HelloController", function($scope,$http,) {
              $scope.myData = [
-    
-];
+     {
+        "operator": "Act Fibernet Broadband",
+        "id": "AFB",
+        "code": "AFB"
+    },
+    {
+        "operator": "Comway Broadband",
+        "id": "CMB",
+        "code": "CMB"
+    },
 
-             $scope.sendRecharge = function (recharge) {
-        console.log(recharge);
-        console.log("recharge amount" + recharge.amount);
-        console.log("MobileRech?requestID=1&amount=" + recharge.amount + "&recharge_operator=" + recharge.Operator + "&recharge_circle=" + recharge.Circle + "&recharge_number=" + recharge.mobile + "&format=json");
-        $http.get("MobileRech?requestID=1&amount=" + recharge.amount + "&recharge_operator=" + recharge.Operator + "&recharge_circle=" + recharge.Circle + "&recharge_number=" + recharge.mobile + "&format=json")
+    {
+        "operator": "Connect Broadband",
+        "id": "CNB",
+        "code": "CNB"
+    },
+    {
+        "operator": "Fusionnet Web Services Private Limited",
+        "id": "FWB",
+        "code": "FWB"
+    },     {
+        "operator": "Hathway Broadband",
+        "id": "HTB",
+        "code": "HTB"
+    },
+    {
+        "operator": "Nextra Broadband",
+        "id": "NXB",
+        "code": "NXB"
+    },
+
+    {
+        "operator": "Spectranet Broadband",
+        "id": "STB",
+        "code": "STB"
+    },
+    {
+        "operator": "Tikona-broadband",
+        "id": "TDB",
+        "code": "TDB"
+    },
+    {
+        "operator": "Ttn Broadband",
+        "id": "TNB",
+        "code": "TNB"
+    }
+];
+     $scope.GetAmount = function () {
+	
+ $http.post("http://api.sakshamapp.com/Bill_Fetch?recharge_number=" + $scope.recharge.mobile)
                 .then(function (response) {
                     console.log(response);
-                    alert(response.data.Message);
-
-                    //$state.go('AllRecharge');
+                    alert(response.data.MSG);
+               $scope.recharge.amount = response.data.AMOUNT;
+                   
                 });
-
+	
+      
     };
+     
          });
       </script>
