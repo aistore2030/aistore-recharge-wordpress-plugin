@@ -599,7 +599,7 @@ recharge_amount,recharge_operator, description,url_hit,ip_address ) VALUES (%d, 
 
 
 		
-		/*
+	 
 	
 add_action( 'woocommerce_order_status_pending', 'processRechargeStep3', 10, 1);
 add_action( 'woocommerce_order_status_failed', 'processRechargeStep3', 10, 1);
@@ -609,8 +609,8 @@ add_action( 'woocommerce_order_status_processing', 'processRechargeStep3', 10, 1
 add_action( 'woocommerce_order_status_completed', 'processRechargeStep3', 10, 1);
 add_action( 'woocommerce_order_status_refunded', 'processRechargeStep3', 10, 1);
 add_action( 'woocommerce_order_status_cancelled', 'processRechargeStep3', 10, 1);	
- */
-add_action( 'woocommerce_order_status_completed', 'processRechargeStep3', 10, 1);
+ 
+//add_action( 'woocommerce_order_status_completed', 'processRechargeStep3', 10, 1);
  
 
  

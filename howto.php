@@ -23,7 +23,7 @@ function aistore_recharge_howtosetup_page()
 <h2>Step 1 </h2>
 
  <p>
-Create  4 Pages <br />
+Create  13 Pages <br />
 
 Page 1 for prepaid recharge form and insert this shortcode [ AISTORERECHARGEFORM type="prepaid" ]  Remove spaces <br />
 
@@ -45,11 +45,11 @@ Page 9 for creditcard recharge form and insert this shortcode [ AISTORERECHARGEF
 
 Page 10 for loanemi recharge form and insert this shortcode [ AISTORERECHARGEFORM type="loanemi" ] Remove spaces <br />
 
-Page 11 for insurance of recharge   and insert this shortcode [ AistoreRechargeReport type="insurance" ]  Remove spaces <br />
+Page 11 for insurance of recharge   and insert this shortcode [ AISTORERECHARGEFORM type="insurance" ]  Remove spaces <br />
 
-Page 12 for cabletv of recharge   and insert this shortcode [ AistoreRechargeReport type="cabletv" ]  Remove spaces <br />
+Page 12 for cabletv of recharge   and insert this shortcode [ AISTORERECHARGEFORM type="cabletv" ]  Remove spaces <br />
 
-Page 13 for report of recharge   and insert this shortcode [ AistoreRechargeReport ]  Remove spaces <br />
+Page 13 for report of recharge   and insert this shortcode [ AistoreRechargeReport type="" ]  Remove spaces <br />
 
 
 </p>

@@ -45,7 +45,7 @@ Recharge  Amount
 
 </td><td>
 
-<input type="text" ng-model="recharge.amount" name="amount"  autocomplete="on" maxlength="4" class="rupee" />
+<input type="text" ng-model="recharge.amount" name="recharge_amount"  autocomplete="on" maxlength="4" class="rupee" />
 
 	
 
@@ -53,7 +53,9 @@ Recharge  Amount
 
    
 
-   <tr><td>
+   <tr>
+       <td><?php wp_nonce_field('process_recharge', 'process_recharge'); ?></td> 
+       <td>
 
 <input type="submit" value="Process Recharge" />
 

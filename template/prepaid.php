@@ -6,7 +6,7 @@
  <h2>Prepaid Recharge Form  </h2> 
 
  <div ng-app = "myapp" ng-controller = "HelloController">
- <div class="col-md-6">
+
  <form method="post" action="<?php echo $url2; ?>">
 
   <table  class="table">
@@ -28,7 +28,7 @@ Number</td><td>
 <tr><td>
 
 Operator</td><td>
- <select class="form-control" ng-model="recharge.Operator" name="mobile_operator"  autocomplete="on">
+ <select class="form-control" ng-model="recharge.Operator" name="recharge_operator"  autocomplete="on">
                         <option ng-repeat="operators in myData1"   ng-selected="goperator === operators.id" value="{{operators.id}}">
                             {{operators.name}}
                         </option>
@@ -51,7 +51,7 @@ Recharge  Amount
 
 </td><td>
 
-<input type="text" name="recharge_amount" value="" required />
+<input type="text" ng-model="recharge.amount" name="recharge_amount" value="" required />
 
 	
 
@@ -59,7 +59,10 @@ Recharge  Amount
 
    
 
-   <tr><td>
+   <tr>
+       
+       <td><?php wp_nonce_field('process_recharge', 'process_recharge'); ?></td>
+       <td>
 
 <input type="submit" value="Process Recharge" />
 
@@ -70,8 +73,8 @@ Recharge  Amount
 
 
 </form>
-</div>
-<div class="col-md-6">
+
+
     <div class="portlet light bordered"  ng-show="recharge.mobile.length == 10">
         <div class=" portlet-body"> 
             <form name="outerForm" class="tab-form-demo" ng-show="recharge.mobile.length == 10">
@@ -108,7 +111,7 @@ Recharge  Amount
                 </uib-tabset>
             </form>
         </div>   </div> </div></div>
-</div>
+
    <script>
          angular.module("myapp", [])
          
@@ -312,6 +315,10 @@ $scope.myData2 = [
         }
 
     };  
+    
+     $scope.showamount = function (x) {
+        $scope.recharge.amount = x.amount;
+    };
              $scope.sendRecharge = function (recharge) {
         console.log(recharge);
         console.log("recharge amount" + recharge.amount);
