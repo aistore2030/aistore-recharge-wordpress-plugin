@@ -1,7 +1,5 @@
 
       <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-   
- <h2>DTH Recharge Form  </h2> 
 
  <div ng-app = "myapp" ng-controller = "HelloController">
  <div class="col-md-6">
@@ -17,7 +15,7 @@
 
 Number</td><td>
 
- <input  length="10" pattern="[789][0-9]{9}"  ng-model="recharge.mobile" type="text" name="recharge_number"  maxlength="10" >
+ <input pattern="[789][0-9]{9}"  ng-model="recharge.mobile"  type="text" name="recharge_number" >
    
 
 </td></tr>

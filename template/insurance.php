@@ -2,8 +2,6 @@ Insurance
 
       <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
    
- <h2>Insurance Bill Recharge Form  </h2> 
-
  <div ng-app = "myapp" ng-controller = "HelloController">
  <div class="col-md-6">
  <form method="post" action="<?php echo $url2; ?>">

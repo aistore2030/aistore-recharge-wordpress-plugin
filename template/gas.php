@@ -1,7 +1,6 @@
 
       <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-   
- <h2>GasBill Recharge Form  </h2> 
+
 
  <div ng-app = "myapp" ng-controller = "HelloController">
  <div class="col-md-6">
@@ -17,7 +16,7 @@
 
 Number</td><td>
 
- <input  length="10" pattern="[789][0-9]{9}"  ng-model="recharge.mobile" ng-change="GetAmount()" type="text" name="recharge_number"  maxlength="10" >
+ <input  pattern="[789][0-9]{9}"  ng-model="recharge.mobile"  type="text" name="recharge_number">
    
 
 </td></tr>
@@ -27,7 +26,7 @@ Number</td><td>
 <tr><td>
 
 Operator</td><td>
- <select class="form-control" ng-model="recharge.Operator" name="mobile_operator"  autocomplete="on">
+ <select class="form-control" ng-model="recharge.Operator" name="mobile_operator" ng-change="GetAmount(recharge)" autocomplete="on">
                         <option ng-repeat="operators in myData"   ng-selected="goperator === operators.id" value="{{operators.id}}">
                             {{operators.operator}}
                         </option>
@@ -87,7 +86,7 @@ Recharge  Amount
     {
         "operator": "Mahanagar Gas LIMITED",
         "id": "MGL",
-        "code": "53"
+        "code": "MGL"
     },
     {
         "operator": "GUJARAT GAS COMPANY LIMITED",
@@ -125,9 +124,9 @@ Recharge  Amount
         "code": "VGL"
     }
 ];
-$scope.GetAmount = function () {
+$scope.GetAmount = function (recharge) {
 	
-  $http.post("http://api.sakshamapp.com/Ambika_Bill_Fetch?recharge_number=" + $scope.recharge.mobile)
+  $http.post("http://api.sakshamapp.com/Bill_Fetch?recharge_operator="+ $scope.recharge.operator+"&recharge_number=" + $scope.recharge.mobile)
                 .then(function (response) {
                     console.log(response);
                     alert(response.data.MSG);

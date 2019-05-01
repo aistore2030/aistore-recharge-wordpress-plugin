@@ -1,7 +1,5 @@
 
       <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-   
- <h2>Landline Recharge Form  </h2> 
 
  <div ng-app = "myapp" ng-controller = "HelloController">
  <div class="col-md-6">
@@ -17,7 +15,7 @@
 
 Number</td><td>
 
- <input  length="10" pattern="[789][0-9]{9}"  ng-model="recharge.mobile" type="text" ng-change="GetAmount()" name="recharge_number"  maxlength="10" >
+ <input   pattern="[789][0-9]{9}"  ng-model="recharge.mobile" type="text" ng-change="GetAmount()" name="recharge_number" >
    
 
 </td></tr>
@@ -81,8 +79,8 @@ Recharge  Amount
     },
     {
         "operator": "Bsnl - Corporate",
-        "id": "BCL",
-        "code": "BCL"
+        "id": "BGL",
+        "code": "BGL"
     },
 
     {
@@ -99,7 +97,7 @@ Recharge  Amount
 ];
 $scope.GetAmount = function () {
 	
-	$http.post("http://api.sakshamapp.com/Bill_Fetch?recharge_number=" + $scope.recharge.mobile)
+	$http.post("http://api.sakshamapp.com/Bill_Fetch?recharge_operator="+ $scope.recharge.Operator+"&recharge_number=" + $scope.recharge.mobile)
                 .then(function (response) {
                     console.log(response);
                     alert(response.data.MSG);

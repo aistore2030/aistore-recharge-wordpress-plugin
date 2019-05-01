@@ -1,10 +1,7 @@
 
 
       <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-   
-
- <h2>Prepaid Recharge Form  </h2> 
-
+ 
  <div ng-app = "myapp" ng-controller = "HelloController">
 
  <form method="post" action="<?php echo $url2; ?>">
@@ -28,8 +25,9 @@ Number</td><td>
 <tr><td>
 
 Operator</td><td>
- <select class="form-control" ng-model="recharge.Operator" name="recharge_operator"  autocomplete="on">
-                        <option ng-repeat="operators in myData1"   ng-selected="goperator === operators.id" value="{{operators.id}}">
+ <select class="form-control" ng-model="recharge.Operator" ng-init="recharge.Operator=Operator" name="recharge_operator">
+                         
+                        <option ng-repeat="operators in myData1"   ng-selected="goperator === operators.code" value="{{operators.code}}">
                             {{operators.name}}
                         </option>
                     </select>
@@ -76,7 +74,7 @@ Recharge  Amount
 
 
     <div class="portlet light bordered"  ng-show="recharge.mobile.length == 10">
-        <div class=" portlet-body"> 
+        <div class=" portlet-body" ng-show ="offer" > 
             <form name="outerForm" class="tab-form-demo" ng-show="recharge.mobile.length == 10">
 
                 <uib-tabset active="activeForm">
@@ -114,81 +112,55 @@ Recharge  Amount
 
    <script>
          angular.module("myapp", [])
-         
-         .controller("HelloController", function($scope,$http,) {
+        .controller("HelloController", function($scope,$http,) {
+            $scope.Operator = 'Select Operator';
+            
              $scope.myData1 = [
     {
         "name": "AIRTEL",
-        "id": "Airtel"
+        "code": "Airtel"
     },
     {
         "name": "BSNL",
-        "id": "BSNL"
+        "code": "BSNL"
     },
      {
         "name": "BSNL Special",
-        "id": "BSNL Special"
+        "code": "BSNLSpecial"
     },
     {
         "name": "IDEA",
-        "id": "Idea"
+        "code": "Idea"
     },
      {
         "name": "VODAFONE",
-        "id": "Vodafone"
+        "code": "Vodafone"
     },
     {
         "name": "JIO",
-        "id": "RelianceJio"
+        "code": "RelianceJio"
     },
      {
         "name": "TATA INDICOM",
-        "id": "TataIndicom"
+        "code": "TataIndicom"
     }, 
     {
         "name": "TATA DOCOMO",
-        "id": "Docomo"
+        "code": "Docomo"
     },
     {
         "name": "TELENOR",
-        "id": "Uninor"
+        "code": "Uninor"
     },
     {
         "name": "MTS",
-        "id": "MTS"
+        "code": "MTS"
     }, 
     {
-        "name": "RELIANCE",
-        "id": "Reliance"
-    },
-    {
         "name": "VIRGIN",
-        "id": "Virgin"
-    },
-    {
-        "name": "Airtel Digital TV",
-        "id": "AirtelDigitalTV"
-    },
-    {
-        "name": "BIG TV",
-        "id": "BIGtv"
-    },
-    {
-        "name": "DISH TV",
-        "code": "DishTV"
-    },
-    {
-        "name": "TATASKY DTH TV",
-        "code": "TataSky"
-    },
-    {
-        "name": "VIDEOCON DTH TV",
-        "code": "VideoconD2H"
-    },
-    {
-        "name": "Sun Direct",
-        "id": "SunDirect"
-    } 
+        "code": "Virgin"
+    }
+  
 ];
 $scope.myData2 = [
    {
@@ -288,7 +260,7 @@ $scope.myData2 = [
         $scope.getOperator = function () {
 
         if ($scope.recharge.mobile.length === 10) {
-
+$scope.offer=false;
             $http.post("http://api.sakshamapp.com/Operator?mobile=" + $scope.recharge.mobile)
                     .then(function (response) {
  console.log("272");
@@ -303,6 +275,7 @@ $scope.myData2 = [
                       
                         $http.get("http://api.sakshamapp.com/Offer?Operator=" + $scope.recharge.Operator + "&Circle=" + $scope.recharge.Circle)
                                 .then(function (response) {
+                                    $scope.offer=true;
                                     console.log(response.data);
                                     $scope.myWelcome = response.data;
                                     

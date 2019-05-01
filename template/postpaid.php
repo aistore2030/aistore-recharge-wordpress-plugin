@@ -1,9 +1,6 @@
 
 
       <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-   
-
- <h2>Prepaid Recharge Form  </h2> 
 
  <div ng-app = "myapp" ng-controller = "HelloController">
  <div class="col-md-6">
@@ -79,7 +76,7 @@ Recharge  Amount
 	    {"name": "Idea Postpaid", "id1":"IP", "id":"IdeaPostpaid"},
 	   
              {"name": "AIRCLE BILL", "id1":"AIP", "id":"AIRCLE"},
-	   {"name": "RELIANCE BILL", "id1":"RP", "id":"Reliance"},
+	   {"name": "Jiopostpaid", "id1":"RP", "id":"Reliance"},
 	    {"name": "Tata Docomo Postpaid", "id1":"TP", "id":"Docomo"},
 	    {"name": "Vodafone Postpaid", "id1":"VP", "id":"Vodafone"}
 ]

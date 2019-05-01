@@ -1,7 +1,5 @@
 
       <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-   
- <h2>Water Bill Recharge Form  </h2> 
 
  <div ng-app = "myapp" ng-controller = "HelloController">
  <div class="col-md-6">
@@ -17,7 +15,7 @@
 
 Number</td><td>
 
- <input  length="10" pattern="[789][0-9]{9}"  ng-model="recharge.mobile" ng-change="GetAmount()" type="text" name="recharge_number"  maxlength="10" >
+ <input pattern="[789][0-9]{9}"  ng-model="recharge.mobile" ng-change="GetAmount()" type="text" name="recharge_number">
    
 
 </td></tr>
@@ -75,33 +73,33 @@ Recharge  Amount
     {
         "operator": "Delhi Jal Board",
         "id": "DJW",
-        "code": "AG"
+        "code": "DJW"
     },
     {
         "operator": "Municipal Corporation of Gurugram",
         "id": "MGW",
-        "code": "SEG"
+        "code": "MGW"
     },
 
     {
         "operator": "Urban Improvement Trust (UIT) - Bhiwadi",
         "id": "UBW",
-        "code": "53"
+        "code": "UBW"
     },
     {
         "operator": "Uttarakhand Jal Sansthan",
         "id": "UJW",
-        "code": "GGCL"
+        "code": "UJW"
     },
     {
         "operator": "Municipal Corporation Jalandhar",
         "id": "MJW",
-        "code": "HCG"
+        "code": "MJW"
     },
     {
         "operator": "Muncipal Coporation Ludhiana",
         "id": "MLW",
-        "code": "IGL"
+        "code": "MLW"
     },
     {
         "operator": "Indore Municipal Corporation",
@@ -130,7 +128,7 @@ Recharge  Amount
 ];
 $scope.GetAmount = function () {
 	
-	$http.post("http://api.sakshamapp.com/Bill_Fetch?recharge_number=" + $scope.recharge.mobile)
+	$http.post("http://api.sakshamapp.com/Bill_Fetch?recharge_operator="+ $scope.recharge.Operator+"&recharge_number=" + $scope.recharge.mobile)
                 .then(function (response) {
                     console.log(response);
                     alert(response.data.MSG);
